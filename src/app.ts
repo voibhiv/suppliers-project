@@ -1,7 +1,7 @@
+import './util/module-alias';
 import bodyParser from 'body-parser';
 import express from 'express';
-
-import routes from './routes';
+import HelloWorldRouter from './routes/hello-world-route';
 
 class App {
   public server;
@@ -18,9 +18,7 @@ class App {
   }
 
   private routes() {
-    this.server.use([
-      routes
-    ]);
+    this.server.use([HelloWorldRouter]);
   }
 
   private setupExpress(): void {
