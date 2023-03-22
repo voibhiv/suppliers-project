@@ -1,3 +1,4 @@
+import { HelloWorldService } from '@src/services/hello-world.service';
 import { Request, Response, Router } from 'express';
 
 class HelloWorldController {
@@ -10,8 +11,11 @@ class HelloWorldController {
     this.routes();
   }
 
-  public index(req: Request, res: Response): void {
-    res.status(200).send({ message: 'Hello World' });
+  public async index(req: Request, res: Response) {
+
+    const service = new HelloWorldService();
+
+    res.status(200).send(await service.index());
   }
 
   private routes() {
