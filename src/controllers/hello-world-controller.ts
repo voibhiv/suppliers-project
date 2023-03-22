@@ -14,8 +14,7 @@ class HelloWorldController {
   public async index(req: Request, res: Response) {
 
     const service = new HelloWorldService();
-
-    res.status(200).send(await service.index());
+    res.status(200).json(await service.index());
   }
 
   private routes() {
