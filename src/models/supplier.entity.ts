@@ -1,5 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, Entity, OneToMany } from "typeorm";
-import { SupplierUser } from "./supplier-user.entity";
+import { Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, Entity, OneToMany, ManyToOne, JoinColumn } from "typeorm";
+import { User } from "./user.entity";
 
 @Entity()
 export class Supplier {
@@ -36,7 +36,8 @@ export class Supplier {
   @DeleteDateColumn() 
   deletedAt: Date;
 
-  @OneToMany(() => SupplierUser, (supplierUser) => supplierUser.supplier)
-  supplierUser: SupplierUser[];
+  @ManyToOne(() => User, (user) => user.companyUser)
+  @JoinColumn()
+  user: User;
 
 }

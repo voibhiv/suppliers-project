@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { CompanyUser } from "./company-users.entity";
-import { SupplierUser } from "./supplier-user.entity";
+import { Supplier } from "./supplier.entity";
 
 @Entity()
 export class User {
@@ -34,6 +34,6 @@ export class User {
   @OneToMany(() => CompanyUser, (companyUser) => companyUser.user)
   companyUser: CompanyUser[];
 
-  @OneToMany(() => SupplierUser, (supplierUser) => supplierUser.user)
-  supplierUser: SupplierUser[];
+  @OneToMany(() => Supplier, (supplier) => supplier.user)
+  supplier: Supplier[];
 }
