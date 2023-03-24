@@ -1,9 +1,10 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
-import { Company } from "./company.entity";
+import { Supplier } from "./supplier.entity";
 import { User } from "./user.entity";
 
+
 @Entity()
-export class CompanyUser {
+export class SupplierUser {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -21,12 +22,11 @@ export class CompanyUser {
   @DeleteDateColumn() 
   deletedAt: Date;
 
-  @ManyToOne(() => Company, (company) => company.companyUser)
-  @JoinColumn()
-  company: Company;
-
-  @ManyToOne(() => User, (user) => user.companyUser)
+  @ManyToOne(() => User, (user) => user.supplierUser)
   @JoinColumn()
   user: User;
-  
+
+  @ManyToOne(() => Supplier, (supplier) => supplier.supplierUser)
+  @JoinColumn()
+  supplier: Supplier;
 }

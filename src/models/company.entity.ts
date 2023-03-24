@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { CompanyUser } from "./company-users.entity";
 
 @Entity()
 export class Company {
@@ -26,4 +27,6 @@ export class Company {
   @DeleteDateColumn() 
   deletedAt: Date;
 
+  @OneToMany(() => CompanyUser, (companyUser) => companyUser.company)
+  companyUser: CompanyUser[];
 }
