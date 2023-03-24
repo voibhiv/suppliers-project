@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { CompanyUser } from "./company-users.entity";
 
-@Entity('users')
-export class Users {
+@Entity()
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -21,11 +22,14 @@ export class Users {
   description: string;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn() 
-  updated_at: Date;
+  updatedAt: Date;
 
   @DeleteDateColumn() 
-  deleted_at: Date;
+  deletedAt: Date;
+
+  @OneToMany(() => CompanyUser, (companyUser) => companyUser.user)
+  companies: CompanyUser[]
 }
