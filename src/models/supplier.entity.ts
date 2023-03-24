@@ -13,13 +13,13 @@ export class Supplier {
     type: "varchar",
     default: null
   })
-  cpf: string;
+  cpf?: string;
 
   @Column({
     type: "varchar",
     default: null
   })
-  cnpj: string;
+  cnpj?: string;
 
   @Column()
   contact: string;

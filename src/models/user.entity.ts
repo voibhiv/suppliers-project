@@ -18,6 +18,12 @@ export class User {
 
   @Column()
   email: string;
+
+  @Column()
+  cpf?: string;
+
+  @Column()
+  cnpj?: string;
   
   @Column()
   description: string;
