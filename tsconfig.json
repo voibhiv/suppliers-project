@@ -21,7 +21,9 @@
     "baseUrl": ".",
     "paths": {
       "@src/*": ["./src/*"],
-      "@test/*": ["./test/*"]
+      "@test/*": ["./test/*"],
+      "@middlewares/*": ["./src/middlewares/*"]
+
     },
     "rootDirs": [
       "./src",

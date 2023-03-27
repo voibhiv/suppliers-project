@@ -1,12 +1,20 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { CompanyUser } from "./company-users.entity";
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { CompanyUser } from './company-users.entity';
 
 @Entity()
 export class Company {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column("char", { length: 2 })
+  @Column('char', { length: 2 })
   uf: string;
 
   @Column()
@@ -21,10 +29,10 @@ export class Company {
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn() 
+  @UpdateDateColumn()
   updatedAt: Date;
 
-  @DeleteDateColumn() 
+  @DeleteDateColumn()
   deletedAt: Date;
 
   @OneToMany(() => CompanyUser, (companyUser) => companyUser.company)

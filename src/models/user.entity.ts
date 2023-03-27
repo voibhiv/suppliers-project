@@ -1,6 +1,14 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { CompanyUser } from "./company-users.entity";
-import { Supplier } from "./supplier.entity";
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { CompanyUser } from './company-users.entity';
+import { Supplier } from './supplier.entity';
 
 @Entity()
 export class User {
@@ -24,17 +32,17 @@ export class User {
 
   @Column()
   cnpj?: string;
-  
+
   @Column()
   description: string;
 
   @CreateDateColumn()
   createdAt: Date;
 
-  @UpdateDateColumn() 
+  @UpdateDateColumn()
   updatedAt: Date;
 
-  @DeleteDateColumn() 
+  @DeleteDateColumn()
   deletedAt: Date;
 
   @OneToMany(() => CompanyUser, (companyUser) => companyUser.user)

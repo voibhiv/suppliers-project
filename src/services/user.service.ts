@@ -1,8 +1,7 @@
-import { User } from "@src/models/user.entity";
-import { Repository } from "typeorm";
+import { User } from '@src/models/user.entity';
+import { Repository } from 'typeorm';
 
 export class UserService {
-  
   private userRepository: Repository<User>;
 
   constructor() {
@@ -10,6 +9,6 @@ export class UserService {
   }
 
   public index(): string {
-    return "Hello World";
+    return 'Hello World';
   }
 }

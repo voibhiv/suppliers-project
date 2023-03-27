@@ -1,7 +1,7 @@
 import { UserDomain } from '@src/domain/user.domain';
-import { User } from '@src/models/user.entity'
+import { User } from '@src/models/user.entity';
 import { Repository } from 'typeorm';
-import { AppDataSource } from '../../data-source'
+import { AppDataSource } from '../../data-source';
 import { IUserRepo } from '../user.repos';
 
 export class UserRepository implements IUserRepo {
@@ -13,17 +13,17 @@ export class UserRepository implements IUserRepo {
 
   findUserByName = async (name: string) => {
     return await this.ormRepository.findOneBy({
-      name
-    })
-  }
+      name,
+    });
+  };
 
   findUserById = async (id: string) => {
     return await this.ormRepository.findOneBy({
-      id
-    })
-  }
+      id,
+    });
+  };
 
   saveUser = async (user: UserDomain) => {
     return await this.ormRepository.save(user);
-  }
+  };
 }

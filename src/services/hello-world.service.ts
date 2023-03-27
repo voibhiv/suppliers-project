@@ -1,10 +1,8 @@
 export class HelloWorldService {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  constructor() {
-
-  }
+  constructor() {}
 
   public index(): string {
-    return "Hello World";
+    return 'Hello World';
   }
 }
