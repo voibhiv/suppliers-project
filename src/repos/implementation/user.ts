@@ -1,10 +1,10 @@
-import { UserDomain } from '@src/domain/user.domain';
+import UserDomain from '@src/domain/user.domain';
 import { User } from '@src/models/user.entity';
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../../data-source';
-import { IUserRepo } from '../user.repos';
+import IUserRepo from '../user.repos';
 
-export class UserRepository implements IUserRepo {
+export default class UserRepository implements IUserRepo {
   private ormRepository: Repository<User>;
 
   constructor() {

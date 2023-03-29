@@ -9,7 +9,7 @@ interface UserProps {
   description: string;
 }
 
-export class UserDomain {
+export default class UserDomain {
   id?: string;
   name: string;
   username: string;

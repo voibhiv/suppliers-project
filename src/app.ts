@@ -2,6 +2,7 @@ import './util/module-alias';
 import bodyParser from 'body-parser';
 import express, { Application } from 'express';
 import HelloWorldController from './controllers/hello-world-controller';
+import UserController from './controllers/user.controller';
 import { SwaggerRoutes } from './swagger.routes';
 import { AppDataSource } from './data-source';
 export class App {
@@ -21,7 +22,10 @@ export class App {
   }
 
   private routes() {
-    this.server.use([HelloWorldController]);
+    this.server.use([
+      HelloWorldController,
+      UserController
+    ]);
   }
 
   private async configSwagger(): Promise<void> {
@@ -31,7 +35,9 @@ export class App {
   }
 
   private setupExpress(): void {
-    this.server.use(bodyParser.json());
+    this.server.use(bodyParser.urlencoded({
+      extended: true
+    }));
   }
 
   private async databaseSetup(): Promise<void> {
