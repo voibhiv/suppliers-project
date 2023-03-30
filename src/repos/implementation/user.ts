@@ -18,7 +18,6 @@ export default class UserRepository implements IUserRepo {
   };
 
   findUserByParameters = async (params: Partial<UserDomain>) => {
-    console.log('parametros => ', params);
     return await this.ormRepository
       .createQueryBuilder()
       .where(
