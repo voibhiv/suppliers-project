@@ -43,7 +43,6 @@ export class UserService {
     // Check if exist user with same username, email, cpf or cnpj
     const verifyFields = {
       username: user.username,
-      password: user.password,
       email: user.email,
       cpf: user.cpf,
       cnpj: user.cnpj,

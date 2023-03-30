@@ -30,7 +30,7 @@ class UserController {
 
       res.status(201).json(result);
     } catch (error: unknown) {
-      res.json(error);
+      res.json({ errors: [error] });
     }
   };
 

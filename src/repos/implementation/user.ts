@@ -21,7 +21,7 @@ export default class UserRepository implements IUserRepo {
     return await this.ormRepository
       .createQueryBuilder()
       .where(
-        'username = :username OR password = :password OR email = :email OR cpf = :cpf OR cnpj = :cnpj',
+        'username = :username OR email = :email OR cpf = :cpf OR cnpj = :cnpj',
         {
           ...params,
         }

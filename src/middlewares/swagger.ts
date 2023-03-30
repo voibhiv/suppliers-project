@@ -12,7 +12,6 @@ class SwaggerConfig {
     // Aqui fazemos uma configuração inicial, informando o nome da aplicação e definindo alguns tipos
     this.config = {
       swagger: '2.0',
-      basePath: '/api',
       info: {
         title: '`Suppliers API`',
         version: '0.0.0',

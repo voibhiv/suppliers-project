@@ -1,5 +1,5 @@
 const paths = {
-  '/users/{id}': {
+  '/user/{id}': {
     get: {
       tags: ['User'],
       summary: 'User',
@@ -129,31 +129,31 @@ const paths = {
       },
     },
   },
-  '/users': {
+  '/user/create': {
     post: {
       tags: ['User'],
       summary: 'User',
       description: 'Create user',
-      security: [
-        {
-          Bearer: [],
-        },
-      ],
+      // security: [
+      //   {
+      //     Bearer: [],
+      //   },
+      // ],
       parameters: [
         {
           in: 'body',
-          name: 'update',
+          name: 'payload',
           required: true,
           schema: {
-            $ref: '#/definitions/UserPayload',
+            $ref: '#/definitions/CreateUserPayload',
           },
         },
       ],
       responses: {
-        200: {
-          description: 'OK',
+        201: {
+          description: 'Created',
           schema: {
-            $ref: '#/definitions/User',
+            $ref: '#/definitions/SuccessResponse',
           },
         },
         404: {
@@ -185,14 +185,59 @@ const definitions = {
       updatedAt: { type: 'date' },
     },
   },
-  UserPayload: {
+
+  CreateUserPayload: {
     type: 'object',
     properties: {
       name: { type: 'string' },
-      document: { type: 'string' },
+      username: { type: 'string' },
       password: { type: 'string' },
+      email: { type: 'string' },
+      cpf: { type: 'string' },
+      cnpj: { type: 'string' },
+      description: { type: 'string' }
     },
   },
+
+  SuccessResponse: {
+    type: 'object',
+    properties: {
+      code: { type: "number" },
+      message: { type: 'string' },
+      data: { 
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          username: { type: 'string' },
+          password: { type: 'string' },
+          email: { type: 'string' },
+          cpf: { type: 'string' },
+          cnpj: { type: 'string' },
+          description: { type: 'string' },
+          deletedAt: { type: null },
+          id: { type: 'string' },
+          createdAt: { type: 'string' },
+          updatedAt: { type: 'string' }
+        }
+      }
+    },
+  },
+
+  ErrorResponse: {
+    type: 'object',
+    properties: {
+      errors: {
+        type: "array",
+        items: {
+          type: "object",
+          properties: {
+            code: { type: 'number' },
+            data: { type: 'string' },
+          }
+        }
+      }
+    },
+  }
 };
 
 export default {
