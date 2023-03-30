@@ -16,16 +16,13 @@ export class App {
     this.routes();
     this.configSwagger();
   }
-  
+
   private middlewares(): void {
     this.server.use(express.json());
   }
 
   private routes() {
-    this.server.use([
-      HelloWorldController,
-      UserController
-    ]);
+    this.server.use([HelloWorldController, UserController]);
   }
 
   private async configSwagger(): Promise<void> {
@@ -35,9 +32,11 @@ export class App {
   }
 
   private setupExpress(): void {
-    this.server.use(bodyParser.urlencoded({
-      extended: true
-    }));
+    this.server.use(
+      bodyParser.urlencoded({
+        extended: true,
+      })
+    );
   }
 
   private async databaseSetup(): Promise<void> {

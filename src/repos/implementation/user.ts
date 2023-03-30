@@ -11,10 +11,23 @@ export default class UserRepository implements IUserRepo {
     this.ormRepository = AppDataSource.getRepository(User);
   }
 
-  findUserByName = async (name: string) => {
+  findUserByUsername = async (username: string) => {
     return await this.ormRepository.findOneBy({
-      name,
+      username,
     });
+  };
+
+  findUserByParameters = async (params: Partial<UserDomain>) => {
+    console.log('parametros => ', params);
+    return await this.ormRepository
+      .createQueryBuilder()
+      .where(
+        'username = :username OR password = :password OR email = :email OR cpf = :cpf OR cnpj = :cnpj',
+        {
+          ...params,
+        }
+      )
+      .getOne();
   };
 
   findUserById = async (id: string) => {
