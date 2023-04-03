@@ -47,7 +47,7 @@ export class UserService {
       cpf: user.cpf,
       cnpj: user.cnpj,
     };
-    const existUser = await this.repository.findUserByParameters(verifyFields);
+    const existUser = await this.repository.findUserByParametersAndConditions(verifyFields);
     if (existUser) {
       throw new ConflictError(
         'Usuário já existente, verifique os campos novamente e tente outra vez!'
@@ -58,15 +58,45 @@ export class UserService {
     const newUser = await this.repository.saveUser(user);
     if (!newUser) {
       throw new NotFoundError(
-        'Erro na criação do Usuário, tente novamente mais tarde'
+        'Erro na criação do usuário, tente novamente mais tarde'
       );
     }
 
     return newUser;
   }
 
+  public async updateUser(userId: string, user: Partial<UserDomain>) {
+
+    // define id of user
+    user.id = userId;
+
+    // Array containing the fields that can't be repeated by diff users 
+    const fieldsToCheck: Partial<UserDomain> = {
+      username: user.username,
+      email: user.email,
+      cpf: user.cpf,
+      cnpj: user.cnpj
+    };
+    const existUser = await this.repository.findUserByParametersAndConditions(fieldsToCheck, userId);
+    if (existUser) {
+      throw new ConflictError(
+        'Campos já existentes em outro usuário, verifique-os novamente e tente outra vez!'
+      );
+    }
+
+    // Throw a Errow if fail operation
+    const updatedUser = await this.repository.updateUser(user);
+    if (!updatedUser) {
+      throw new NotFoundError(
+        'Erro na atualização do usuário, tente novamente mais tarde'
+      );
+    }
+
+    return updatedUser;
+  }
+
   private async hashPassword(password: string): Promise<string> {
-    const saltRounds = Number(process.env.SALT_ROUNDS);
+    const saltRounds   = Number(process.env.SALT_ROUNDS);
     const passwordHash = await hash(password, saltRounds);
 
     return passwordHash;

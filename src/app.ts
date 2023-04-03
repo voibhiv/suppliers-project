@@ -1,7 +1,6 @@
 import './util/module-alias';
 import bodyParser from 'body-parser';
 import express, { Application } from 'express';
-import HelloWorldController from './controllers/hello-world-controller';
 import UserController from './controllers/user.controller';
 import { SwaggerRoutes } from './swagger.routes';
 import { AppDataSource } from './data-source';
@@ -22,7 +21,7 @@ export class App {
   }
 
   private routes() {
-    this.server.use([HelloWorldController, UserController]);
+    this.server.use([UserController]);
   }
 
   private async configSwagger(): Promise<void> {

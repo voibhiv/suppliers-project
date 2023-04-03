@@ -17,16 +17,20 @@ export default class UserRepository implements IUserRepo {
     });
   };
 
-  findUserByParameters = async (params: Partial<UserDomain>) => {
-    return await this.ormRepository
-      .createQueryBuilder()
-      .where(
-        'username = :username OR email = :email OR cpf = :cpf OR cnpj = :cnpj',
-        {
-          ...params,
-        }
-      )
-      .getOne();
+  findUserByParametersAndConditions = async (params: Partial<UserDomain>, userId?: string) => {
+    const query = await this.ormRepository.createQueryBuilder('user');
+    console.log(params);
+    query.where('username = :username OR email = :email OR cpf = :cpf OR cnpj = :cnpj', {
+      ...params
+    })
+
+    if (userId) {
+      query.andWhere("id != :id", {
+        id: userId
+      });
+    }
+    console.log(await query.getQuery());
+    return query.getOne();
   };
 
   findUserById = async (id: string) => {
@@ -36,6 +40,10 @@ export default class UserRepository implements IUserRepo {
   };
 
   saveUser = async (user: UserDomain) => {
+    return await this.ormRepository.save(user);
+  };
+
+  updateUser = async (user: Partial<UserDomain | User>) => {
     return await this.ormRepository.save(user);
   };
 }
