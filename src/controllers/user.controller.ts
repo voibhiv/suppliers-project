@@ -1,4 +1,8 @@
-import { UserEditSuccess, UserSaveSuccess } from '@src/interfaces/responses.interface';
+import {
+  UserEditSuccess,
+  UserFindSuccess,
+  UserSaveSuccess,
+} from '@src/interfaces/responses.interface';
 import UserRepository from '@src/repos/implementation/user';
 import IUserRepo from '@src/repos/user.repos';
 import { UserService } from '@src/services/user.service';
@@ -12,9 +16,9 @@ class UserController {
 
   constructor() {
     this.userRepository = new UserRepository();
-    this.service        = new UserService(this.userRepository);
-    this.nameRoute      = '/user';
-    this.router         = Router();
+    this.service = new UserService(this.userRepository);
+    this.nameRoute = '/user';
+    this.router = Router();
     this.routes();
   }
 
@@ -28,7 +32,7 @@ class UserController {
         data: newUser,
       };
 
-      res.status(201).json(result);
+      res.status(result.code).json(result);
     } catch (error: unknown) {
       res.json({ errors: [error] });
     }
@@ -36,26 +40,43 @@ class UserController {
 
   update = async (req: Request, res: Response) => {
     try {
-
       // Getting id user by parameters
       const idUser = req.params?.id;
       const userUpdated = await this.service.updateUser(idUser, req.body);
 
       const result: UserEditSuccess = {
-        code: 201,
-        message: 'Usuário criado com sucesso',
+        code: 200,
+        message: 'Usuário editado com sucesso',
         data: userUpdated,
       };
-      res.status(201).json(result);
-      
+      res.status(result.code).json(result);
     } catch (error: unknown) {
+      res.json({ errors: [error] });
+    }
+  };
+
+  read = async (req: Request, res: Response) => {
+    try {
+      // Getting id user by parameters
+      const idUser = req.params?.id;
+      const user = await this.service.getMe(idUser);
+
+      const result: UserFindSuccess = {
+        code: 200,
+        message: 'Usuário encontrado com sucesso',
+        data: user,
+      };
+
+      res.status(result.code).json(result);
+    } catch (error) {
       res.json({ errors: [error] });
     }
   };
 
   private routes() {
     this.router.post(`${this.nameRoute}/create`, this.create);
-    this.router.put(`${this.nameRoute}/update/:id`, this.update);
+    this.router.put(`${this.nameRoute}/:id`, this.update);
+    this.router.get(`${this.nameRoute}/:id`, this.read);
   }
 }
 

@@ -195,16 +195,16 @@ const definitions = {
       email: { type: 'string' },
       cpf: { type: 'string' },
       cnpj: { type: 'string' },
-      description: { type: 'string' }
+      description: { type: 'string' },
     },
   },
 
   SuccessResponse: {
     type: 'object',
     properties: {
-      code: { type: "number" },
+      code: { type: 'number' },
       message: { type: 'string' },
-      data: { 
+      data: {
         type: 'object',
         properties: {
           name: { type: 'string' },
@@ -217,9 +217,9 @@ const definitions = {
           deletedAt: { type: null },
           id: { type: 'string' },
           createdAt: { type: 'string' },
-          updatedAt: { type: 'string' }
-        }
-      }
+          updatedAt: { type: 'string' },
+        },
+      },
     },
   },
 
@@ -227,17 +227,17 @@ const definitions = {
     type: 'object',
     properties: {
       errors: {
-        type: "array",
+        type: 'array',
         items: {
-          type: "object",
+          type: 'object',
           properties: {
             code: { type: 'number' },
             data: { type: 'string' },
-          }
-        }
-      }
+          },
+        },
+      },
     },
-  }
+  },
 };
 
 export default {

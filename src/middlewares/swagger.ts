@@ -61,9 +61,7 @@ class SwaggerConfig {
    * @returns
    */
   public async load(): Promise<{}> {
-    const dir = await fs.readdirSync(
-      resolve(__dirname, '..', 'swagger-definition')
-    );
+    const dir = await fs.readdirSync(resolve(__dirname, '..', 'swagger-definition'));
     const swaggerDocument = dir.reduce(
       (total, path) => {
         try {

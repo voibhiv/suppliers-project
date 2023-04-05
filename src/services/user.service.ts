@@ -1,11 +1,8 @@
 import UserDomain from '@src/domain/user.domain';
-import {
-  BadRequestError,
-  ConflictError,
-  NotFoundError,
-} from '@src/errors/errors.format';
+import { BadRequestError, ConflictError, NotFoundError } from '@src/errors/errors.format';
+import { User } from '@src/models/user.entity';
 import IUserRepo from '@src/repos/user.repos';
-import { hash } from 'bcrypt';
+import { hash, compareSync } from 'bcrypt';
 export class UserService {
   private repository: IUserRepo;
 
@@ -13,19 +10,12 @@ export class UserService {
     this.repository = repository;
   }
 
-  public async createUser(user: UserDomain): Promise<UserDomain> {
+  public async createUser(user: UserDomain): Promise<Partial<UserDomain>> {
     // encrypt password
     user.password = await this.hashPassword(user.password);
 
     // Verify if some of the fields required are not filled
-    const requiredFields = [
-      'name',
-      'username',
-      'password',
-      'email',
-      'cpf',
-      'cnpj',
-    ];
+    const requiredFields = ['name', 'username', 'password', 'email', 'cpf', 'cnpj'];
     let invalidFields = '';
     for (const [key, value] of Object.entries(user)) {
       if (value === '' && requiredFields.includes(key)) {
@@ -57,46 +47,70 @@ export class UserService {
     // Throw a Errow if fail operation
     const newUser = await this.repository.saveUser(user);
     if (!newUser) {
-      throw new NotFoundError(
-        'Erro na criação do usuário, tente novamente mais tarde'
-      );
+      throw new NotFoundError('Erro na criação do usuário, tente novamente mais tarde');
     }
 
-    return newUser;
+    const { password, ...rest } = newUser;
+
+    return rest;
   }
 
-  public async updateUser(userId: string, user: Partial<UserDomain>) {
-
+  public async updateUser(userId: string, user: Partial<UserDomain>): Promise<Partial<UserDomain>> {
     // define id of user
     user.id = userId;
 
-    // Array containing the fields that can't be repeated by diff users 
+    // Array containing the fields that can't be repeated by diff users
     const fieldsToCheck: Partial<UserDomain> = {
       username: user.username,
       email: user.email,
       cpf: user.cpf,
-      cnpj: user.cnpj
+      cnpj: user.cnpj,
     };
-    const existUser = await this.repository.findUserByParametersAndConditions(fieldsToCheck, userId);
+    const existUser = await this.repository.findUserByParametersAndConditions(
+      fieldsToCheck,
+      userId
+    );
     if (existUser) {
       throw new ConflictError(
         'Campos já existentes em outro usuário, verifique-os novamente e tente outra vez!'
       );
     }
 
+    // Throw error case password is equal
+    if (user.password) {
+      const userActual = await this.repository.findPasswordUserById(userId);
+      if (userActual && (await compareSync(user.password, userActual.password))) {
+        throw new ConflictError('A senha deve ser diferente da atual!');
+      }
+    }
+
+    // hash password
+    user.password = await this.hashPassword(`${user.password}`);
+
     // Throw a Errow if fail operation
     const updatedUser = await this.repository.updateUser(user);
     if (!updatedUser) {
-      throw new NotFoundError(
-        'Erro na atualização do usuário, tente novamente mais tarde'
-      );
+      throw new NotFoundError('Erro na atualização do usuário, tente novamente mais tarde');
     }
 
-    return updatedUser;
+    const { password, ...rest } = updatedUser;
+
+    return rest;
+  }
+
+  public async getMe(userId: string) {
+    // Get user by ir
+    const user = await this.repository.findUserById(userId);
+
+    if (!user) {
+      throw new NotFoundError('Usuário não encontrado!');
+    }
+
+    return user;
   }
 
   private async hashPassword(password: string): Promise<string> {
-    const saltRounds   = Number(process.env.SALT_ROUNDS);
+    const saltRounds = Number(process.env.SALT_ROUNDS);
     const passwordHash = await hash(password, saltRounds);
 
     return passwordHash;

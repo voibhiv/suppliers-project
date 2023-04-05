@@ -9,9 +9,7 @@ export class SwaggerRoutes {
     const document = await SwaggerDocument.load();
     swaggerRoute.use('/api/', serve);
     swaggerRoute.get('/api/', setup(document));
-    swaggerRoute.get('/api/', (_: Request, res: Response) =>
-      res.json(document)
-    );
+    swaggerRoute.get('/api/', (_: Request, res: Response) => res.json(document));
 
     return swaggerRoute;
   }

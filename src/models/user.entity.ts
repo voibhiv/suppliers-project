@@ -21,7 +21,13 @@ export class User {
   @Column()
   username: string;
 
-  @Column()
+  @Column({
+    name: 'password',
+    nullable: false,
+    type: 'varchar',
+    length: 255,
+    select: false,
+  })
   password: string;
 
   @Column()

@@ -3,11 +3,17 @@ import { User } from '@src/models/user.entity';
 export interface UserSaveSuccess {
   code: number;
   message: string;
-  data: UserDomain;
+  data: Partial<UserDomain>;
 }
 
 export interface UserEditSuccess {
   code: number;
   message: string;
-  data: UserDomain | User;
+  data: Partial<UserDomain>;
+}
+
+export interface UserFindSuccess {
+  code: number;
+  message: string;
+  data: User;
 }

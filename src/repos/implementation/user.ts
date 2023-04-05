@@ -19,23 +19,28 @@ export default class UserRepository implements IUserRepo {
 
   findUserByParametersAndConditions = async (params: Partial<UserDomain>, userId?: string) => {
     const query = await this.ormRepository.createQueryBuilder('user');
-    console.log(params);
-    query.where('username = :username OR email = :email OR cpf = :cpf OR cnpj = :cnpj', {
-      ...params
-    })
+    query.where('(username = :username OR email = :email OR cpf = :cpf OR cnpj = :cnpj)', {
+      ...params,
+    });
 
     if (userId) {
-      query.andWhere("id != :id", {
-        id: userId
+      query.andWhere('id != :id', {
+        id: userId,
       });
     }
-    console.log(await query.getQuery());
-    return query.getOne();
+    return query.getRawOne();
   };
 
   findUserById = async (id: string) => {
     return await this.ormRepository.findOneBy({
       id,
+    });
+  };
+
+  findPasswordUserById = async (id: string) => {
+    return await this.ormRepository.findOne({
+      where: { id: id },
+      select: ['password'],
     });
   };
 
