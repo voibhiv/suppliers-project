@@ -119,7 +119,6 @@ export class UserService {
     }
 
     return isDeleted;
-      
   }
 
   private async hashPassword(password: string): Promise<string> {

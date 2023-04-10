@@ -90,7 +90,7 @@ class UserController {
     } catch (error) {
       res.json({ errors: [error] });
     }
-  }
+  };
 
   private routes() {
     this.router.post(`${this.nameRoute}/create`, this.create);

@@ -54,8 +54,7 @@ export default class UserRepository implements IUserRepo {
 
   deleteUser = async (id: string) => {
     const isDeleted = await this.ormRepository.delete(id);
-    
+
     return !!isDeleted.affected || false;
   };
-
 }
