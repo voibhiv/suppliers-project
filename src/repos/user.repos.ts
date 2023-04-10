@@ -9,6 +9,7 @@ export default interface IUserRepo {
   ) => Promise<User | null>;
   findUserById: (id: string) => Promise<User | null>;
   findPasswordUserById: (id: string) => Promise<User | null>;
-  saveUser: (user: UserDomain) => Promise<UserDomain>;
-  updateUser: (user: Partial<UserDomain>) => Promise<UserDomain | User>;
+  saveUser: (user: UserDomain) => Promise<User>;
+  updateUser: (user: Partial<UserDomain>) => Promise<User>;
+  deleteUser: (id: string) => Promise<boolean>;
 }

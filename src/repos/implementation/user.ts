@@ -51,4 +51,11 @@ export default class UserRepository implements IUserRepo {
   updateUser = async (user: Partial<UserDomain | User>) => {
     return await this.ormRepository.save(user);
   };
+
+  deleteUser = async (id: string) => {
+    const isDeleted = await this.ormRepository.delete(id);
+    
+    return !!isDeleted.affected || false;
+  };
+
 }

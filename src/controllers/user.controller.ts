@@ -1,8 +1,9 @@
 import {
+  UserDeletedSuccess,
   UserEditSuccess,
   UserFindSuccess,
   UserSaveSuccess,
-} from '@src/interfaces/responses.interface';
+} from '@src/interfaces/userResponses.interface';
 import UserRepository from '@src/repos/implementation/user';
 import IUserRepo from '@src/repos/user.repos';
 import { UserService } from '@src/services/user.service';
@@ -73,10 +74,29 @@ class UserController {
     }
   };
 
+  delete = async (req: Request, res: Response) => {
+    try {
+      // Getting id user by parameters
+      const idUser = req.params?.id;
+      const userDeleted = await this.service.deleteUser(idUser);
+
+      const result: UserDeletedSuccess = {
+        code: 204,
+        message: 'Usuário deletado com sucesso',
+        data: userDeleted,
+      };
+
+      res.status(result.code).json(result);
+    } catch (error) {
+      res.json({ errors: [error] });
+    }
+  }
+
   private routes() {
     this.router.post(`${this.nameRoute}/create`, this.create);
     this.router.put(`${this.nameRoute}/:id`, this.update);
     this.router.get(`${this.nameRoute}/:id`, this.read);
+    this.router.delete(`${this.nameRoute}/:id`, this.delete);
   }
 }
 

@@ -10,7 +10,7 @@ export class UserService {
     this.repository = repository;
   }
 
-  public async createUser(user: UserDomain): Promise<Partial<UserDomain>> {
+  public async createUser(user: UserDomain): Promise<Partial<User>> {
     // encrypt password
     user.password = await this.hashPassword(user.password);
 
@@ -50,12 +50,13 @@ export class UserService {
       throw new NotFoundError('Erro na criação do usuário, tente novamente mais tarde');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...rest } = newUser;
 
     return rest;
   }
 
-  public async updateUser(userId: string, user: Partial<UserDomain>): Promise<Partial<UserDomain>> {
+  public async updateUser(userId: string, user: Partial<UserDomain>): Promise<Partial<User>> {
     // define id of user
     user.id = userId;
 
@@ -93,13 +94,14 @@ export class UserService {
       throw new NotFoundError('Erro na atualização do usuário, tente novamente mais tarde');
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...rest } = updatedUser;
 
     return rest;
   }
 
-  public async getMe(userId: string) {
-    // Get user by ir
+  public async getMe(userId: string): Promise<User> {
+    // Get user by id
     const user = await this.repository.findUserById(userId);
 
     if (!user) {
@@ -107,6 +109,17 @@ export class UserService {
     }
 
     return user;
+  }
+
+  public async deleteUser(userId: string) {
+    const isDeleted = this.repository.deleteUser(userId);
+
+    if (!isDeleted) {
+      throw new NotFoundError('Erro ao tentar excluir usuário');
+    }
+
+    return isDeleted;
+      
   }
 
   private async hashPassword(password: string): Promise<string> {
